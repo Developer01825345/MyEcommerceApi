@@ -1,0 +1,50 @@
+# Ignore build and object files
+[Dd]ebug/
+[Dd]ebugPublic/
+[Dd]ist/
+bin/
+obj/
+publish/
+
+# Ignore IDE files and project settings
+.vs/
+.idea/
+.vscode/
+
+# Ignore local development settings (user-specific)
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Ignore user secrets and environment-specific settings
+secrets.json
+appsettings.Development.json
+appsettings.Testing.json
+local.settings.json
+
+# Ignore npm / front-end package manager folders
+node_modules/
+bower_components/
+yarn.lock
+
+# Ignore test result and code coverage directories
+TestResults/
+coverage/
+
+# Ignore log files
+*.log
+
+# Ignore platform-specific files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Ignore .NET Core tools folder
+.dotnet/
+
+# Ignore database files if using local development DB
+*.db
+
+# Ignore Azure Function local settings
+local.settings.json
