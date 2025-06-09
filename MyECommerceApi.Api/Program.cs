@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using MyECommerceApi.Domain.Interfaces;
 using MyECommerceApi.Infrastructure;
+using MyECommerceApi.Infrastructure.Mapping;
+using MyECommerceApi.Infrastructure.Repositories;
+using MyECommerceApi.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +14,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MyECommerceApiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
