@@ -41,30 +41,11 @@ public class ProductService : IProductService
     {
         IsProductSkuExists(createProduct.Sku);
 
-        // var mapToProduct = new Product
-        // {
-        //     ProductName = createProduct.ProductName,
-        //     Sku = createProduct.Sku,
-        //     ProductDescription = createProduct.ProductDescription,
-        //     Price = createProduct.Price,
-        //     Stock = createProduct.Stock,
-        //     CreatedAt = DateTime.UtcNow
-        // };
-
         var mapToProduct = _mapper.Map<Product>(createProduct);
 
         var newProduct =_productRepository.Add(mapToProduct);
 
         var mapFromProduct = _mapper.Map<CreateProduct>(newProduct);
-
-        // var mapFromProduct = new CreateProduct
-        // {
-        //     ProductName = newProduct.ProductName,
-        //     Sku = newProduct.Sku,
-        //     ProductDescription = newProduct.ProductDescription,
-        //     Price = newProduct.Price,
-        //     Stock = newProduct.Stock
-        // };
 
         return mapFromProduct;
     }

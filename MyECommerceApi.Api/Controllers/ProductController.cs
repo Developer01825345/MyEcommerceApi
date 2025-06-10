@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyECommerceApi.Domain.Interfaces;
 using MyECommerceApi.Domain.Models.DTO;
 
 namespace MyECommerceApi.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class ProductController : ControllerBase
