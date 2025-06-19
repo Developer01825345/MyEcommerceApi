@@ -10,6 +10,5 @@ public class MappingProfile : Profile
     {
         CreateMap<Product, CreateProduct>().ReverseMap();
         CreateMap<Product, UpdateProduct>().ReverseMap();
-        CreateMap<User, RegisterRequest>().ReverseMap();
     }
 }

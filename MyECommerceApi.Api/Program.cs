@@ -7,6 +7,8 @@ using MyECommerceApi.Infrastructure.Repositories;
 using MyECommerceApi.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using MyECommerceApi.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MyECommerceApiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -26,20 +27,25 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings["Issuer"],
-            ValidAudience = jwtSettings["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(key)
-        };
-    });
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<MyECommerceApiDbContext>()
+    .AddDefaultTokenProviders();
+
+	builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+		.AddJwtBearer(options =>
+		{
+			options.TokenValidationParameters = new TokenValidationParameters
+			{
+				ValidateIssuer = true,
+				ValidateAudience = true,
+				ValidateLifetime = true,
+				ValidateIssuerSigningKey = true,
+				ValidIssuer = jwtSettings["Issuer"],
+				ValidAudience = jwtSettings["Audience"],
+				IssuerSigningKey = new SymmetricSecurityKey(
+					Encoding.UTF8.GetBytes(jwtSettings["Key"]!))
+			};
+		});
 
 builder.Services.AddAuthorization();
 

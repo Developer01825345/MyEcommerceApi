@@ -5,7 +5,7 @@ using MyECommerceApi.Domain.Models.DTO;
 
 namespace MyECommerceApi.Api.Controllers;
 
-[Authorize]
+//[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class ProductController : ControllerBase

@@ -15,12 +15,12 @@ public class ProductRepository : IProductRepository
         return _dbContext.Products.ToList();
     }
 
-    public Product? GetById(Guid id)
+    public Product GetById(Guid id)
     {
         return _dbContext.Products.Find(id);
     }
 
-    public Product? GetBySku(string sku)
+    public Product GetBySku(string sku)
     {
         return _dbContext.Products.FirstOrDefault(p => p.Sku == sku);
     }
