@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MyECommerceApi.Api.Middleware;
 using MyECommerceApi.Domain.Interfaces;
 using MyECommerceApi.Infrastructure;
 using MyECommerceApi.Infrastructure.Mapping;
@@ -49,6 +50,7 @@ if (app.Environment.IsDevelopment())
 // .WithName("GetWeatherForecast")
 // .WithOpenApi();
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 
 app.Run();
