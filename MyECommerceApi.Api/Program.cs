@@ -1,3 +1,6 @@
+using System.Reflection;
+using log4net;
+using log4net.Config;
 using Microsoft.EntityFrameworkCore;
 using MyECommerceApi.Api.Middleware;
 using MyECommerceApi.Domain.Interfaces;
@@ -7,6 +10,9 @@ using MyECommerceApi.Infrastructure.Repositories;
 using MyECommerceApi.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 
 // Add services to the container.
 builder.Services.AddControllers();

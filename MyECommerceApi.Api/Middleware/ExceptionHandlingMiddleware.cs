@@ -2,19 +2,19 @@ using System.Text.Json;
 using MyECommerceApi.Domain.Models;
 using MyECommerceApi.Domain.Exceptions;
 using MyECommerceApi.Domain.Constants.Common.Error;
+using log4net;
 
 namespace MyECommerceApi.Api.Middleware;
 
 public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+    private readonly ILog _logger = LogManager.GetLogger(typeof(ExceptionHandlingMiddleware));
     private readonly IHostEnvironment _env;
 
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger, IHostEnvironment env)
+    public ExceptionHandlingMiddleware(RequestDelegate next, IHostEnvironment env)
     {
         _next = next;
-        _logger = logger;
         _env = env;
     }
 
@@ -26,7 +26,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, Error.DefaultExceptionMessage);
+            _logger.Info(Error.DefaultExceptionMessage);
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -62,6 +62,7 @@ public class ExceptionHandlingMiddleware
         };
 
         var result = JsonSerializer.Serialize(response);
+        _logger.Info(result);
         await context.Response.WriteAsync(result);
     }
 }
