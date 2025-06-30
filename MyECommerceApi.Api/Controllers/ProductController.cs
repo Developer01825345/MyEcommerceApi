@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MyECommerceApi.Domain.Constants;
 using MyECommerceApi.Domain.Interfaces;
 using MyECommerceApi.Domain.Models.DTO;
 
@@ -31,7 +32,7 @@ public class ProductController : ControllerBase
     public IActionResult AddProduct(CreateProduct createProduct)
     {
         _productService.CreateProduct(createProduct);
-        return Ok("Product saved successfully.");
+        return Ok(Message.CreateSuccess);
     }
 
     [HttpPut]
@@ -39,7 +40,7 @@ public class ProductController : ControllerBase
     public IActionResult UpdateProduct(Guid id, UpdateProduct updateProduct)
     {
         _productService.UpdateProduct(id, updateProduct);
-        return Ok("Product updated successfully.");
+        return Ok(Message.UpdateSuccess);
     }
 
     [HttpDelete]
@@ -47,6 +48,6 @@ public class ProductController : ControllerBase
     public IActionResult DeleteProduct(Guid id)
     {
         _productService.DeleteProduct(id);
-        return Ok("Product deleted successfully");
+        return Ok(Message.DeleteSuccess);
     }
 }

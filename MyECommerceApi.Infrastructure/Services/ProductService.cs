@@ -1,4 +1,5 @@
 using AutoMapper;
+using MyECommerceApi.Domain.Constants;
 using MyECommerceApi.Domain.Interfaces;
 using MyECommerceApi.Domain.Models.Domain;
 using MyECommerceApi.Domain.Models.DTO;
@@ -31,7 +32,7 @@ public class ProductService : IProductService
 
     public Product GetProductById(Guid id)
     {
-        var product = _productRepository.GetById(id) ?? throw new ApplicationException("Product does not found.");
+        var product = _productRepository.GetById(id) ?? throw new ApplicationException(Message.NotFound);
 
         return product;
     }
@@ -51,7 +52,7 @@ public class ProductService : IProductService
 
     public UpdateProduct UpdateProduct(Guid id, UpdateProduct updateProduct)
     {
-        var product = _productRepository.GetById(id) ?? throw new ApplicationException("Product does not found.");
+        var product = _productRepository.GetById(id) ?? throw new ApplicationException(Message.NotFound);
 
         IsProductSkuExists(updateProduct.Sku);
 
@@ -66,7 +67,7 @@ public class ProductService : IProductService
 
     public void DeleteProduct(Guid id)
     {
-        var product = _productRepository.GetById(id) ?? throw new ApplicationException("Product not found.");
+        var product = _productRepository.GetById(id) ?? throw new ApplicationException(Message.NotFound);
         _productRepository.Delete(product);
     }
 
@@ -74,6 +75,6 @@ public class ProductService : IProductService
     {
         /// Check for duplicate Sku
         if (_productRepository.GetBySku(sku) is not null)
-            throw new ApplicationException("Duplicate Sku. Please correct.");
+            throw new ApplicationException(Message.DuplicateSku);
     }
 }
