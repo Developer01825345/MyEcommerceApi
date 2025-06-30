@@ -1,4 +1,4 @@
-namespace MyECommerceApi.Api.Models;
+namespace MyECommerceApi.Domain.Models;
 
 public class ApiErrorResponse
 {

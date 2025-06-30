@@ -1,6 +1,7 @@
 using System.Text.Json;
-using MyECommerceApi.Api.Models;
+using MyECommerceApi.Domain.Models;
 using MyECommerceApi.Domain.Exceptions;
+using MyECommerceApi.Domain.Constants.Common.Error;
 
 namespace MyECommerceApi.Api.Middleware;
 
@@ -25,7 +26,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unhandled exception occurred.");
+            _logger.LogError(ex, Error.DefaultExceptionMessage);
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -38,30 +39,19 @@ public class ExceptionHandlingMiddleware
         string message;
 
         if (exception is NotFoundException)
-        {
             statusCode = StatusCodes.Status404NotFound;
-            message = exception.Message;
-        }
         else if (exception is ValidationException)
-        {
             statusCode = StatusCodes.Status400BadRequest;
-            message = exception.Message;
-        }
         else if (exception is UnauthorizedAccessException)
-        {
             statusCode = StatusCodes.Status401Unauthorized;
-            message = exception.Message;
-        }
         else if (exception is DuplicateRecordException)
-        {
             statusCode = StatusCodes.Status409Conflict;
-            message = exception.Message;
-        }
         else
-        {
             statusCode = StatusCodes.Status500InternalServerError;
-            message = _env.IsDevelopment() ? exception.Message : "An unexpected error occurred.";
-        }
+
+        message = (statusCode == StatusCodes.Status500InternalServerError && !_env.IsDevelopment())
+                ? Error.DefaultExceptionMessage 
+                : exception.Message;
 
         context.Response.StatusCode = statusCode;
 
